@@ -1,4 +1,5 @@
 
+# Not solved
 k = int(input()) 
 for _ in range(k): 
     v, e = map(int, input().split()) 
@@ -11,4 +12,4 @@ for _ in range(k):
         b -= 1
         arr[a][b] = arr[b][a] = 1 
     
-    
+
