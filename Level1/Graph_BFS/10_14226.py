@@ -1,37 +1,30 @@
 
-# Not Solved
 from collections import deque 
 
 s = int(input()) 
 
-MAXIMUM = 1001 
-check = [-1]*MAXIMUM
+check = [[-1]*(s+1) for _ in range(s+1)] 
 queue = deque() 
-queue.append(1) 
-check[1] = 0 
-
+queue.append((1, 0)) 
+check[1][0] = 0 
 
 while queue: 
-    now = queue.popleft() 
-
-    nxt = now*2 
-    if nxt < MAXIMUM:
-        if check[nxt] == -1: 
-            queue.append(nxt) 
-            check[nxt] = check[now] + 2 
-        elif check[now] + 2 < check[nxt]: 
-            queue.append(nxt) 
-            check[nxt] = check[now] + 2
+    i, j = queue.popleft() 
+    if check[i][i] == -1: 
+        check[i][i] = check[i][j] + 1 
+        queue.append((i, i)) 
     
-    nxt = now - 1 
-    if 0 <= nxt: 
-        if check[nxt] == -1: 
-            queue.append(nxt) 
-            check[nxt] = check[now] + 1 
-        elif check[now] + 1 < check[nxt]: 
-            queue.append(nxt) 
-            check[nxt] = check[now] + 1 
+    if i+j <= s and check[i+j][j] == -1: 
+        check[i+j][j] = check[i][j] + 1
+        queue.append((i+j, j)) 
 
-print(check[s]) 
+    if i-1 >= 0 and check[i-1][j] == -1: 
+        check[i-1][j] = check[i][j] + 1
+        queue.append((i-1, j)) 
 
+ans = -1 
+for i in range(s+1): 
+    if check[s][i] != -1: 
+        if ans == -1 or ans > check[s][i]: ans = check[s][i] 
 
+print(ans)
